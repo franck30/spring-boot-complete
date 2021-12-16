@@ -7,6 +7,7 @@ import com.franck.springbootcomplete.service.DepartmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class DepartmentController {
 
 
   @PutMapping("/departments/{id}")
-  public Department updateDepartment(@PathVariable("id") Long departmentId,@RequestBody Department department) {
+  public Department updateDepartment(@Valid @PathVariable("id") Long departmentId, @RequestBody Department department) {
 
     return departmentService.updateDepartment(departmentId, department);
   }
