@@ -2,6 +2,7 @@ package com.franck.springbootcomplete.controller;
 
 
 import com.franck.springbootcomplete.entity.Department;
+import com.franck.springbootcomplete.error.DepartmentNotFoundException;
 import com.franck.springbootcomplete.service.DepartmentService;
 import com.franck.springbootcomplete.service.DepartmentServiceImpl;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class DepartmentController {
   }
 
   @GetMapping("/departments/{id}")
-  public Department fetchDepartmentById(@PathVariable("id") Long departmentId){
+  public Department fetchDepartmentById(@PathVariable("id") Long departmentId) throws DepartmentNotFoundException {
     return departmentService.fetchDepartmentById(departmentId);
   }
 
