@@ -1,6 +1,7 @@
 package com.franck.springbootcomplete.controller;
 
 import com.franck.springbootcomplete.entity.Department;
+import com.franck.springbootcomplete.error.DepartmentNotFoundException;
 import com.franck.springbootcomplete.service.DepartmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DepartmentController.class)
 class DepartmentControllerTest {
@@ -49,18 +52,25 @@ class DepartmentControllerTest {
     Mockito.when(departmentService.saveDepartment(inputDepartment)).thenReturn(department);
 
     mockMvc.perform(MockMvcRequestBuilders.post("/departments")
-    .contentType(MediaType.APPLICATION_JSON)
-    .content("{\n" +
-            "\t\"departmentName\":\"I\",\n" +
-            "\t\"departmentAddress\":\"douala\",\n" +
-            "\t\"departmentCode\":\"IT-098\"\n" +
-            "}")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\n" +
+                    "\t\"departmentName\":\"I\",\n" +
+                    "\t\"departmentAddress\":\"douala\",\n" +
+                    "\t\"departmentCode\":\"IT-098\"\n" +
+                    "}")
 
-    ).andExpect(MockMvcResultMatchers.status().isCreated());
+    ).andExpect(status().isCreated());
 
   }
 
   @Test
-  void fetchDepartmentById() {
+  void fetchDepartmentById() throws Exception {
+    Mockito.when(departmentService.fetchDepartmentById(1L))
+            .thenReturn(department);
+
+    mockMvc.perform(MockMvcRequestBuilders.get("/departments/1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.departmentName").value(department.getDepartmentName()));
   }
 }
