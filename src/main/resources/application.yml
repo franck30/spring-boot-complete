@@ -37,6 +37,12 @@ spring:
 welcome:
   message: Bienvenu !
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 ---
 
 spring:
